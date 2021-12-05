@@ -1,3 +1,3 @@
-import { PropertyPaneTextField } from "./ColorFieldPropertyControl/PropertyPaneTextField";
+import { PropertyPaneTextField } from "./TextFieldPropertyControl/PropertyPaneTextField";
 
 export default PropertyPaneTextField;
