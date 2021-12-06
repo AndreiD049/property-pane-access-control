@@ -1,3 +1,3 @@
-import { PropertyPaneTextField } from "./TextFieldPropertyControl/PropertyPaneTextField";
+import { PropertyPaneAccessControl } from "./AccessPropertyControl/PropertyPaneAccessControl";
 
-export default PropertyPaneTextField;
+export default PropertyPaneAccessControl;

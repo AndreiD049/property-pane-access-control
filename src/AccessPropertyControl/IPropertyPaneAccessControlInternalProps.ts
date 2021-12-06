@@ -5,6 +5,8 @@
  * It doesn't have to implement any additional properties.
  */
 import { IPropertyPaneCustomFieldProps } from "@microsoft/sp-property-pane";
-import { IPropertyPaneTextFieldProps } from "./IPropertyPaneTextProps";
+import { IPropertyPaneAccessControlProps } from "./IPropertyPaneAccessControlProps";
 
-export interface IPropertyPaneTextFieldInternalProps extends IPropertyPaneTextFieldProps, IPropertyPaneCustomFieldProps { }
+export interface IPropertyPaneAccessControlInternalProps extends IPropertyPaneAccessControlProps, IPropertyPaneCustomFieldProps {
+	context: any;
+}
