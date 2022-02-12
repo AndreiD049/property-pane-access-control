@@ -1,70 +1,85 @@
-import { IPropertyPaneField, PropertyPaneFieldType } from "@microsoft/sp-property-pane";
-import { sp } from "@pnp/sp";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import AccessControl from "./AccessControl";
-import { IAccessControlProps } from "./IAccessControlProps";
-import { IPropertyPaneAccessControlInternalProps } from "./IPropertyPaneAccessControlInternalProps";
-import { IPropertyPaneAccessControlProps } from "./IPropertyPaneAccessControlProps";
+import {
+    IPropertyPaneField,
+    PropertyPaneFieldType,
+} from '@microsoft/sp-property-pane';
+import { sp } from '@pnp/sp';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import AccessControl, { IUserGroupPermissions } from './AccessControl';
+import { IAccessControlProps } from './IAccessControlProps';
+import { IPropertyPaneAccessControlInternalProps } from './IPropertyPaneAccessControlInternalProps';
+import { IPropertyPaneAccessControlProps } from './IPropertyPaneAccessControlProps';
 
-class PropertyPaneAccessControlBuilder implements IPropertyPaneField<IPropertyPaneAccessControlProps> {
-	public type = PropertyPaneFieldType.Custom;
-	public targetProperty: string;
-	public properties: IPropertyPaneAccessControlInternalProps;
-	private elem: HTMLElement;
-	
-	private _onChangeCallback: (targetProperty?: string, newValue?: any) => void;
+class PropertyPaneAccessControlBuilder
+    implements IPropertyPaneField<IPropertyPaneAccessControlProps>
+{
+    public type = PropertyPaneFieldType.Custom;
+    public targetProperty: string;
+    public properties: IPropertyPaneAccessControlInternalProps;
+    private elem: HTMLElement;
 
-	constructor(targetProperty: string, properties: IPropertyPaneAccessControlProps) {
-		this.targetProperty = targetProperty;
-		this.properties = {
-			key: properties.key,
-			context: properties.context,
-			permissions: properties.permissions,
-			onRender: this.onRender.bind(this),
-			onDispose: this.onDispose.bind(this),
-		};
-		// Setup @pnp/sp
-		sp.setup({
-			spfxContext: this.properties.context,
-		});
-	}
+    private _onChangeCallback: (
+        targetProperty?: string,
+        newValue?: any
+    ) => void;
 
-	public render() {
-		if (!this.elem) {
-			return;
-		}
+    constructor(
+        targetProperty: string,
+        properties: IPropertyPaneAccessControlProps
+    ) {
+        this.targetProperty = targetProperty;
+        this.properties = {
+            key: properties.key,
+            context: properties.context,
+            permissions: properties.permissions,
+            selectedUserGroups: properties.selectedUserGroups,
+            onRender: this.onRender.bind(this),
+            onDispose: this.onDispose.bind(this),
+        };
+    }
 
-		this.onRender(this.elem);
-	}
+    public render() {
+        if (!this.elem) {
+            return;
+        }
 
-	private onRender(elem: HTMLElement, ctx?: any, changeCallback?: (targetProp?: string, newValue?: string) => void) {
-		if (!this.elem) {
-			this.elem = elem;
-		}
+        this.onRender(this.elem);
+    }
 
-		const element: React.ReactElement<IAccessControlProps> = React.createElement(
-			AccessControl,
-			{
-				permissions: this.properties.permissions,
-			}
-		);
-		ReactDOM.render(element, this.elem);
+    private onRender(
+        elem: HTMLElement,
+        ctx?: any,
+        changeCallback?: (targetProp?: string, newValue?: string) => void
+    ) {
+        if (!this.elem) {
+            this.elem = elem;
+        }
 
-		if (changeCallback) {
-			this._onChangeCallback = changeCallback;
-		}
-	}
+        const element: React.ReactElement<IAccessControlProps> =
+            React.createElement(AccessControl, {
+                permissions: this.properties.permissions,
+                onChanged: this.onChanged.bind(this),
+                selected: this.properties.selectedUserGroups,
+            });
+        ReactDOM.render(element, this.elem);
 
-	private onDispose(elem: HTMLElement) {
-		ReactDOM.unmountComponentAtNode(elem);
-	}
+        if (changeCallback) {
+            this._onChangeCallback = changeCallback;
+        }
+    }
 
-	private onChanged(newValue: string) {
-		this._onChangeCallback(this.targetProperty, newValue);
-	}
+    private onDispose(elem: HTMLElement) {
+        ReactDOM.unmountComponentAtNode(elem);
+    }
+
+    private onChanged(newValue: IUserGroupPermissions) {
+        this._onChangeCallback(this.targetProperty, newValue);
+    }
 }
 
-export function PropertyPaneAccessControl(targetProperty: string, properties: IPropertyPaneAccessControlProps) {
-	return new PropertyPaneAccessControlBuilder(targetProperty, properties);
+export function PropertyPaneAccessControl(
+    targetProperty: string,
+    properties: IPropertyPaneAccessControlProps
+) {
+    return new PropertyPaneAccessControlBuilder(targetProperty, properties);
 }

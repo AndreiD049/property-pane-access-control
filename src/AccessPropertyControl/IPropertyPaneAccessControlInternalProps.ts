@@ -4,9 +4,11 @@
  * or unmount the component.
  * It doesn't have to implement any additional properties.
  */
-import { IPropertyPaneCustomFieldProps } from "@microsoft/sp-property-pane";
-import { IPropertyPaneAccessControlProps } from "./IPropertyPaneAccessControlProps";
+import { IPropertyPaneCustomFieldProps } from '@microsoft/sp-property-pane';
+import { IPropertyPaneAccessControlProps } from './IPropertyPaneAccessControlProps';
 
-export interface IPropertyPaneAccessControlInternalProps extends IPropertyPaneAccessControlProps, IPropertyPaneCustomFieldProps {
-	context: any;
+export interface IPropertyPaneAccessControlInternalProps
+  extends IPropertyPaneAccessControlProps,
+    IPropertyPaneCustomFieldProps {
+  context: any;
 }

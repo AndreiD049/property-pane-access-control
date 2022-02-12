@@ -1,3 +1,7 @@
+import { IUserGroupPermissions } from './AccessControl';
+
 export interface IAccessControlProps {
-	permissions: string[];
+  permissions: string[];
+  selected: IUserGroupPermissions;
+  onChanged: (newValue: IUserGroupPermissions) => void;
 }
