@@ -1,5 +1,5 @@
-import { find } from "office-ui-fabric-react";
 import { IUserGroupPermissions } from "..";
+import { setupSP } from "sp-preset";
 import { getCurrentUser, getCurrentUserGroups } from "./site";
 
 export async function canCurrentUser(action: string, permissions: IUserGroupPermissions) {
@@ -14,4 +14,14 @@ export async function canCurrentUser(action: string, permissions: IUserGroupPerm
     const groups = await getCurrentUserGroups();
     const groupSet = new Set(perm.groups);
     return groups.some(g => groupSet.has(String(g.Id)));
+}
+
+export function setupAccessControl(context: any) {
+    setupSP({
+        context: context,
+        rpmAlerting: false,
+        rpmTracing: false,
+        rpmTreshold: 1000,
+        useRPM: true
+    });
 }

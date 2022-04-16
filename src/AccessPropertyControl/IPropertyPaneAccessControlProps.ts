@@ -1,4 +1,3 @@
-import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { IUserGroupPermissions } from './AccessControl';
 
 /**
@@ -7,6 +6,6 @@ import { IUserGroupPermissions } from './AccessControl';
 export interface IPropertyPaneAccessControlProps {
   key: string;
   permissions: string[];
-  context: WebPartContext;
+  context: any;
   selectedUserGroups: IUserGroupPermissions;
 }
